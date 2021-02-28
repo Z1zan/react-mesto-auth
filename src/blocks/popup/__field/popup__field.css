@@ -1,0 +1,26 @@
+@import url(./_name/popup__field_name.css);
+@import url(./_job/popup__field_job.css);
+@import url(./_name-photo/popup__field_name-photo.css);
+@import url(./_url-photo/popup__field_link-photo.css);
+@import url(./_link-avatar/popup__field_link-avatar.css);
+
+.popup__field{
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 17px;
+  margin-right: 36px;
+  margin-left: 36px;
+  margin-bottom: 13px;
+  min-width: 358px;
+  border-top: 0;
+  border-left: 0;
+  border-right: 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  padding: 0 0 13px 0;
+}
+
+@media screen and (max-width: 583px){
+  .popup__field{
+    min-width: 210px;
+  }
+}

@@ -1,0 +1,19 @@
+.profile__avatar-overlay {
+  opacity: 0;
+  background-image: url("../../../images/avatarHover.svg");
+  border-radius: 60%;
+  position: absolute;
+  top: 0;
+  width: 120px;
+  height: 120px;
+  background-repeat: no-repeat;
+  background-position: center;
+  z-index: 2;
+  transition: opacity .3s ease-in-out;
+  cursor: pointer;
+}
+
+.profile__avatar-overlay:hover {
+  opacity: 1;
+  background-color: rgba(0, 0, 0, .6);
+}
