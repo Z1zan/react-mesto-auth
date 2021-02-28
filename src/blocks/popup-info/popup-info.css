@@ -1,0 +1,23 @@
+
+
+.popup-info {
+
+}
+
+.popup-info .popup__container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup-info__img {
+  max-width: 120px;
+  max-width: 120px;
+  margin-top: 60px;
+}
+
+.popup-info .popup__title {
+  margin: 32px 36px 60px;
+  text-align: center;
+}

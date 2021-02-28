@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Верстка и ничего более</title>
+    <link href="./index.css" rel="stylesheet">
+</head>
+<body>
+
+    <div class="page">
+        <header class="header"><img class="header__logo" src="./images/header-logo.svg" alt="Место Россия">
+            <div class="header__line"></div>
+        </header>
+
+        <div class="form form-register">
+            <div class="form__container">
+                <h2 class="form__title">Регистрация</h2>
+                <div class="form__form">
+                    <input class="form__field form__field_email" id="input-email" name="email" value=""
+                                                placeholder="Email" required="" minlength="2" maxlength="30">
+                    <span class="form__form-field-error" id="input-email-error"></span>
+                </div>
+                <div class="form__form">
+                    <input class="form__field form__field_password" id="input-password" type="password" name="password"
+                                                value="" placeholder="Пароль" required="" minlength="8">
+                    <span class="form__form-field-error" id="input-link-error"></span>
+                </div>
+                <button class="form__submit-btn submit-add-btn form__submit-btn_inactive" type="submit" disabled="true">
+                    Зарегистрироваться
+                </button>
+                <p class="form__description">Уже зарегистрированы? Войти</p>
+            </div>
+        </div>
+
+    <!--    <form class="popup popup-info popup_opened" name="infoPopup">-->
+    <!--        <div class="popup__container">-->
+    <!--            <button class="popup__close-btn popup-add__close-btn opacity" type="reset"></button>-->
+    <!--            <img class="popup-info__img" src="./images/Union.png" alt="">-->
+    <!--            <h2 class="popup__title">Вы успешно <br /> зарегистрировались!</h2>-->
+    <!--        </div>-->
+    <!--        <div class="popup__overlay overlay-add"></div>-->
+    <!--    </form>-->
+
+
+    </div>
+</body>
+</html>

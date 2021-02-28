@@ -14,3 +14,6 @@
 @import url(./blocks/popup-edit/popup-edit.css);
 @import url(./blocks/popup-add/popup-add.css);
 @import url(./blocks/popup-img/popup-img.css);
+
+@import url(./blocks/popup-info/popup-info.css);
+@import url(./blocks/form/form.css);

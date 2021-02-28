@@ -11,6 +11,12 @@ import EditProfilePopup from './EditProfilePopup.js';
 import EditAvatarPopup from './EditAvatarPopup.js';
 import AddPlacePopup from './AddPlacePopup.js';
 
+
+import Login from './Login.js';
+import Register from './Register.js';
+import InfoTooltip from './InfoTooltip.js';
+
+
 import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
 
 function App() {
@@ -162,6 +168,12 @@ function App() {
           handleCardDelete={handleCardDelete}
           />
           <Footer />
+
+          <Login />
+
+          <Register />
+
+          <InfoTooltip />
 
           <EditAvatarPopup setAvatar={handleUpdateAvatar} isOpen={avatarPopupOpen} onClose={closeAllPopups} />
 
