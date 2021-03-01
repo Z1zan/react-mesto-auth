@@ -1,5 +1,6 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect  } from 'react';
+import { BrowserRouter, Switch, Route } from 'react-router-dom'
 
 import Header from './Header.js';
 import Main from './Main.js';
@@ -14,7 +15,9 @@ import AddPlacePopup from './AddPlacePopup.js';
 
 import Login from './Login.js';
 import Register from './Register.js';
-import InfoTooltip from './InfoTooltip.js';
+// import InfoTooltip from './InfoTooltip.js';
+import InfoToolOk from './InfoToolOk.js';
+import InfoToolNope from './InfoToolNope.js';
 
 
 import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
@@ -154,41 +157,51 @@ function App() {
 
 
   return (
-    <>
+    <BrowserRouter>
+
       <CurrentUserContext.Provider value={currentUser}>
         <div className="page">
           <Header />
-          <Main 
-          onEditAvatar={handleEditAvatarClick} 
-          onEditProfile={handleEditProfileClick} 
-          onAddPlace={handleAddPlaceClick}
-          onImgCard={handleCardClick}
-          cards={cards}
-          handleCardLike={handleCardLike}
-          handleCardDelete={handleCardDelete}
-          />
+          <Switch>
+
+          <Route path="/main">
+              <Main
+                onEditAvatar={handleEditAvatarClick}
+                onEditProfile={handleEditProfileClick}
+                onAddPlace={handleAddPlaceClick}
+                onImgCard={handleCardClick}
+                cards={cards}
+                handleCardLike={handleCardLike}
+                handleCardDelete={handleCardDelete}
+              />
+              <EditAvatarPopup setAvatar={handleUpdateAvatar} isOpen={avatarPopupOpen} onClose={closeAllPopups} />
+              <EditProfilePopup onUpdateUser={handleUpdateUser} isOpen={editPopupOpen} onClose={closeAllPopups} />
+              <AddPlacePopup addCard={handleAddPlaceSubmit} isOpen={addPopupOpen} onClose={closeAllPopups} />
+              <PopupWithForm name="del" title="Вы уверены?" >
+                <input id="" name="cardId" required type="text" hidden />
+              </PopupWithForm>
+              <ImagePopup card={selectedCard} isOpen={imgPopupOpen} onClose={closeAllPopups} />
+            </Route>
+
+            <Route path="/sign-in">
+              <Login />
+              <InfoToolOk />
+              <InfoToolNope />
+            </Route>
+
+            <Route path="/sign-up">
+              <Register />
+              <InfoToolOk />
+              <InfoToolNope />
+            </Route>
+
+          </Switch>
+
           <Footer />
 
-          <Login />
-
-          <Register />
-
-          <InfoTooltip />
-
-          <EditAvatarPopup setAvatar={handleUpdateAvatar} isOpen={avatarPopupOpen} onClose={closeAllPopups} />
-
-          <EditProfilePopup onUpdateUser={handleUpdateUser} isOpen={editPopupOpen} onClose={closeAllPopups} />
-
-          <AddPlacePopup addCard={handleAddPlaceSubmit} isOpen={addPopupOpen} onClose={closeAllPopups} />
-
-          <PopupWithForm name="del" title="Вы уверены?" >
-            <input id="" name="cardId" required type="text" hidden />
-          </PopupWithForm>
-
-          <ImagePopup card={selectedCard} isOpen={imgPopupOpen} onClose={closeAllPopups} />
         </div>
       </CurrentUserContext.Provider>
-    </>
+    </BrowserRouter>
   )
 }
 
