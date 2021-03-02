@@ -128,10 +128,74 @@ class Api {
       )
     }
   }
+
+
+  registration() {
+    return fetch(`${this.authUrl}/signup`), {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: { //or body: JSON.stringify({
+        "password": "somepassword",
+        "email": "email@yandex.ru"
+      }
+      .then((res) => 
+      res.ok
+        ? {
+          "data": {
+              "_id": "5f5204c577488bcaa8b7bdf2",
+              "email": "email@yandex.ru"
+          }
+        }
+        : Promise.reject(`${res.status} некорректно заполнено одно из полей`) //сделать как в брифе
+      )
+    }
+  }
+
+  login() {
+    return fetch(`${this.authUrl}/signin`), {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: {
+        "password": "dsfsdfsdfsdf",
+        "email": "email@email.ru"
+      }
+      .then((res) =>
+      res.ok
+        ? {
+            "token" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjUxNDhlNWJiODhmZGNhOTIxYjZhYzciLCJpYXQiOjE1OTkyMTExNzN9.Q3DVLh7t0f0BjyG9gh3UlUREYQxl2chdGTGy701lF6I"
+          }
+        : Promise.reject(`${res.status} некорректно заполнено одно из полей`)  //сделать как в брифе
+      )
+    }
+  }
+
+  checkValidToken() {
+    return fetch(`${this.authUrl}/users/me`), {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization" : `Bearer ${this.jwl}`
+      }
+      .then((res) => 
+        res.ok
+          ? {
+            "_id":"1f525cf06e02630312f3fed7",
+            "email":"email@email.ru"
+          }
+          : Promise.reject(`${res.status} некорректно заполнено одно из полей`)  //сделать как в брифе
+      )
+    }
+  }
 }
 
 const api = new Api({
   baseUrl: "https://mesto.nomoreparties.co/v1/cohort-19",
+  authUrl: "https://auth.nomoreparties.co",
+  jwl: "PUSTO",
   token: "264a260c-a5ff-4494-a8c2-9dd802b24892",
 });
 

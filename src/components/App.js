@@ -183,13 +183,13 @@ function App() {
               <ImagePopup card={selectedCard} isOpen={imgPopupOpen} onClose={closeAllPopups} />
             </Route>
 
-            <Route path="/sign-in">
+            <Route path="/signin">
               <Login />
               <InfoToolOk />
               <InfoToolNope />
             </Route>
 
-            <Route path="/sign-up">
+            <Route path="/signup">
               <Register />
               <InfoToolOk />
               <InfoToolNope />
