@@ -130,65 +130,69 @@ class Api {
   }
 
 
-  registration(email, password) {
-    return fetch(`${this.authUrl}/signup`), {
+  registration(data) {
+    return fetch(`${this.authUrl}/signup`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        password,
-        email
+        password: data.password,
+        email: data.email
       })
-      .then((res) => 
-      res.ok
-        ? {
-          "data": {
-              "_id": "5f5204c577488bcaa8b7bdf2",
-              "email": "email@yandex.ru"
-          }
-        }
-        : Promise.reject(`${res.status} некорректно заполнено одно из полей`) //сделать как в брифе
+    })
+    .then((res) => 
+    res.ok
+      ? res.json(
+        // {data: {
+        //     _id,
+        //     email
+        // }}
       )
-    }
+      : Promise.reject(`${res.status} некорректно заполнено одно из полей`) //сделать как в брифе
+    )
   }
 
-  login(email, password) {
-    return fetch(`${this.authUrl}/signin`), {
+  login(data) {
+    return fetch(`${this.authUrl}/signin`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        password,
-        email
+        password: data.password,
+        email: data.email
       })
-      .then((res) =>
-      res.ok
-        ? {
-            "token" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjUxNDhlNWJiODhmZGNhOTIxYjZhYzciLCJpYXQiOjE1OTkyMTExNzN9.Q3DVLh7t0f0BjyG9gh3UlUREYQxl2chdGTGy701lF6I"
-          }
-        : Promise.reject(`${res.status} некорректно заполнено одно из полей`)  //сделать как в брифе
+    })
+    .then((res) =>
+    res.ok
+      ? res.json(
+        // {
+        //   token
+        // }
       )
-    }
+      : Promise.reject(`${res.status} некорректно заполнено одно из полей`)  //сделать как в брифе
+    )
   }
 
   checkValidToken(_id, email) {
-    return fetch(`${this.authUrl}/users/me`), {
+    return fetch(`${this.authUrl}/users/me`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
         "Authorization" : `Bearer ${this.jwl}`
       }
-      .then((res) => 
-        res.ok
-          ? {
-            _id,
-            email
-          }
-          : Promise.reject(`${res.status} некорректно заполнено одно из полей`)  //сделать как в брифе
-      )
-    }
+    })
+    .then((res) => 
+      res.ok
+        ? res.json(
+        // {
+        // _id,
+        // email
+        // }
+        )
+        : Promise.reject(`${res.status} некорректно заполнено одно из полей`)  //сделать как в брифе
+    )
   }
 }
 

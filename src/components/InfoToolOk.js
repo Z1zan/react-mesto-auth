@@ -1,13 +1,14 @@
 
 import InfoTooltip from './InfoTooltip';
+import okImg from '../images/Union.png';
 
 function InfoToolOk(props) {
 
 
   return(
 
-    <InfoTooltip isOpen={props.isOpen} onClose={props.onClose}>
-      <img className="popup-info__img" src="./images/Union.png" alt="" />
+    <InfoTooltip isOpen={props.isOpen} onClose={props.onClose} name="ok">
+      <img className="popup-info__img" src={okImg} alt="" />
       <h2 className="popup__title">
         Вы успешно <br />
         зарегистрировались!

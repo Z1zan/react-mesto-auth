@@ -18,6 +18,7 @@ import Register from './Register.js';
 // import InfoTooltip from './InfoTooltip.js';
 import InfoToolOk from './InfoToolOk.js';
 import InfoToolNope from './InfoToolNope.js';
+import ProtectedRoute from './ProtectedRoute.js';
 
 
 import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
@@ -88,6 +89,38 @@ function App() {
       })
       .catch((err) => console.log(err))
   }, [])
+
+
+
+
+  function handleRegister(item) {
+    console.log(item)
+    console.log("HELLLLOOOOOOO")
+    api
+      .registration(item)
+      .then((data) => {
+        console.log(data)
+        handelInfoToolOk()
+      })
+      .catch((err) => {
+        console.log(err)
+        handleInfoToolNope()
+      })
+  }
+  function handleLogin(item) {
+
+  }
+  function handleSignOut(item) {
+
+  }
+
+
+
+
+
+
+
+
 
   function handleUpdateUser(item) {
     api
@@ -176,10 +209,10 @@ function App() {
 
       <CurrentUserContext.Provider value={currentUser}>
         <div className="page">
-          <Header />
           <Switch>
 
-          <Route exact path="/main">
+            <ProtectedRoute path="/main" loggedIn={loggedIn}>
+              <Header url="/" text="Выйти" onSignOut={handleSignOut}/>
               <Main
                 onEditAvatar={handleEditAvatarClick}
                 onEditProfile={handleEditProfileClick}
@@ -196,16 +229,18 @@ function App() {
                 <input id="" name="cardId" required type="text" hidden />
               </PopupWithForm>
               <ImagePopup card={selectedCard} isOpen={imgPopupOpen} onClose={closeAllPopups} />
-            </Route>
+            </ProtectedRoute>
 
             <Route path="/signin">
-              <Login />
+              <Header url="/signup" text="Зарегистрироваться"/>
+              <Login onLogin={handleLogin} />
               <InfoToolOk isOpen={infoToolOkPopupOpen} onClose={closeAllPopups}/>
               <InfoToolNope isOpen={infoToolNopePopupOpen} onClose={closeAllPopups}/>
             </Route>
 
             <Route path="/signup">
-              <Register />
+              <Header url="/signin" text="Войти"/>
+              <Register onRegister={handleRegister} />
               <InfoToolOk isOpen={infoToolOkPopupOpen} onClose={closeAllPopups}/>
               <InfoToolNope isOpen={infoToolNopePopupOpen} onClose={closeAllPopups}/>
             </Route>
