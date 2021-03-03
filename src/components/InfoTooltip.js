@@ -4,12 +4,12 @@ function InfoTooltip(props) {
 
   return (
 
-    <form class="popup popup-info popup_opened" name="infoPopup">
-      <div class="popup__container">
-        <button class="popup__close-btn popup-add__close-btn opacity" type="reset"></button>
+    <form className={`popup popup-info ${props.isOpen}`} name="infoPopup">
+      <div className="popup__container">
+        <button onClose={props.onClose} className="popup__close-btn popup-add__close-btn opacity" type="reset"></button>
         <>{props.children}</>
       </div>
-      <div class="popup__overlay overlay-add"></div>
+      <div className="popup__overlay overlay-add"></div>
     </form>
 
   )

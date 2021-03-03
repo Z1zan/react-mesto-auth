@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState, useEffect  } from 'react';
-import { BrowserRouter, Switch, Route } from 'react-router-dom'
+import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom'
 
 import Header from './Header.js';
 import Main from './Main.js';
@@ -32,6 +32,9 @@ function App() {
   const [isImagePopupOpen, setIsImagePopupOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState({});
 
+  const [isInfoToolOkPopupOpen, setIsInfoToolOkPopupOpen] = useState(false);
+  const [isInfoToolNopePopupOpen, setIsInfoToolNopePopupOpen] = useState(false);
+
 
   function handleCardClick(card) {
     setIsImagePopupOpen(true);
@@ -50,11 +53,21 @@ function App() {
     setIsAddPlacePopupOpen(true);
   }
 
+  function handelInfoToolOk() {
+    setIsInfoToolOkPopupOpen(true);
+  }
+
+  function handleInfoToolNope() {
+    setIsInfoToolNopePopupOpen(true);
+  }
+
   function closeAllPopups() {
     setIsEditAvatarPopupOpen(false);
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
     setIsImagePopupOpen(false);
+    setIsInfoToolOkPopupOpen(false);
+    setIsInfoToolNopePopupOpen(false);
   }
 
 
@@ -62,6 +75,8 @@ function App() {
   const editPopupOpen = `${isEditProfilePopupOpen ? 'popup_opened' : ''}`;
   const addPopupOpen = `${isAddPlacePopupOpen ? 'popup_opened' : ''}`;
   const imgPopupOpen = `${isImagePopupOpen ? 'popup_opened' : ''}`;
+  const infoToolOkPopupOpen = `${isInfoToolOkPopupOpen ? 'popup_opened' : ''}`;
+  const infoToolNopePopupOpen = `${isInfoToolNopePopupOpen ? 'popup_opened' : ''}`;
 
   const [currentUser, setCurrentUser] = useState({});
 
@@ -152,7 +167,7 @@ function App() {
       .catch(err => console.log(err));
   }
 
-
+  const [loggedIn, setLoggedIn] = useState(false);
 
 
 
@@ -164,7 +179,7 @@ function App() {
           <Header />
           <Switch>
 
-          <Route path="/main">
+          <Route exact path="/main">
               <Main
                 onEditAvatar={handleEditAvatarClick}
                 onEditProfile={handleEditProfileClick}
@@ -185,14 +200,18 @@ function App() {
 
             <Route path="/signin">
               <Login />
-              <InfoToolOk />
-              <InfoToolNope />
+              <InfoToolOk isOpen={infoToolOkPopupOpen} onClose={closeAllPopups}/>
+              <InfoToolNope isOpen={infoToolNopePopupOpen} onClose={closeAllPopups}/>
             </Route>
 
             <Route path="/signup">
               <Register />
-              <InfoToolOk />
-              <InfoToolNope />
+              <InfoToolOk isOpen={infoToolOkPopupOpen} onClose={closeAllPopups}/>
+              <InfoToolNope isOpen={infoToolNopePopupOpen} onClose={closeAllPopups}/>
+            </Route>
+
+            <Route exact path="/">
+              {loggedIn ? <Redirect to="/main" /> : <Redirect  to="/signin"/>}
             </Route>
 
           </Switch>

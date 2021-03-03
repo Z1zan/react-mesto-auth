@@ -130,16 +130,16 @@ class Api {
   }
 
 
-  registration() {
+  registration(email, password) {
     return fetch(`${this.authUrl}/signup`), {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
-      body: { //or body: JSON.stringify({
-        "password": "somepassword",
-        "email": "email@yandex.ru"
-      }
+      body: JSON.stringify({
+        password,
+        email
+      })
       .then((res) => 
       res.ok
         ? {
@@ -153,16 +153,16 @@ class Api {
     }
   }
 
-  login() {
+  login(email, password) {
     return fetch(`${this.authUrl}/signin`), {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
-      body: {
-        "password": "dsfsdfsdfsdf",
-        "email": "email@email.ru"
-      }
+      body: JSON.stringify({
+        password,
+        email
+      })
       .then((res) =>
       res.ok
         ? {
@@ -173,7 +173,7 @@ class Api {
     }
   }
 
-  checkValidToken() {
+  checkValidToken(_id, email) {
     return fetch(`${this.authUrl}/users/me`), {
       method: "GET",
       headers: {
@@ -183,8 +183,8 @@ class Api {
       .then((res) => 
         res.ok
           ? {
-            "_id":"1f525cf06e02630312f3fed7",
-            "email":"email@email.ru"
+            _id,
+            email
           }
           : Promise.reject(`${res.status} некорректно заполнено одно из полей`)  //сделать как в брифе
       )

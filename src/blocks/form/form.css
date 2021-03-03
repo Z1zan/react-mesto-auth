@@ -6,6 +6,11 @@
   color: #fff;
 }
 
+.form a {
+  color: #fff;
+  text-decoration: none;
+}
+
 .form__container {
   max-width: 358px;
 }
