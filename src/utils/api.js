@@ -1,9 +1,9 @@
 class Api {
-  constructor({ baseUrl, token, authUrl, jwl }) {
+  constructor({ baseUrl, token, authUrl, jwt }) {
     this.baseUrl = baseUrl;
     this._token = token;
     this.authUrl = authUrl;
-    this.jwl = jwl;
+    this.jwt = jwt;
 
   }
 
@@ -147,7 +147,7 @@ class Api {
     .then((res) => 
     res.ok
       ? res.json()
-      : Promise.reject(`Error: ${res.status}`) //сделать как в брифе;
+      : Promise.reject(`Ошибка: ${res.status}`) //сделать как в брифе;
     )
   }
 
@@ -165,7 +165,7 @@ class Api {
     .then((res) =>
       res.ok
         ? res.json()
-        : Promise.reject(`Ошибка дизлайка карточки: ${res.status}`)
+        : Promise.reject(`Ошибка: ${res.status}`)
       )
   }
 
@@ -181,7 +181,7 @@ class Api {
       if(res.ok) {
         res.json()
       }
-      return Promise.reject(`Error: ${res.status}`); ///////////////////
+      return Promise.reject(`Ошибка: ${res.status}`); ///////////////////
     })
   }
 }
@@ -190,7 +190,7 @@ const api = new Api({
   baseUrl: "https://mesto.nomoreparties.co/v1/cohort-19",
   token: "264a260c-a5ff-4494-a8c2-9dd802b24892",
   authUrl: "https://auth.nomoreparties.co",
-  jwl: localStorage.getItem("jwl"),
+  jwt: localStorage.getItem("jwt"),
 });
 
 export default api;

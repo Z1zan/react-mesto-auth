@@ -17,9 +17,6 @@ import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
 function App() {
 
-  const history = useHistory();
-  console.log("из App", history);
-
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
@@ -88,33 +85,17 @@ function App() {
   }, [])
 
 
-  // const history = useHistory();
-  // console.log(history);
-
-  // function handleRegister(item) {
-  //   // console.log(item);
-  //   api
-  //     .registration(item)
-  //     .then((data) => {
-  //       // console.log(data);
-  //       handelInfoToolOk();
-  //       // setTimeout(() => {
-  //       //   history.push("/signin");
-  //       // }, 1000);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //       handleInfoToolNope();
-  //     })
-  // }
-
+  const history = useHistory();
 
   function handleRegister(item) {
-    // console.log(item);
     api
       .registration(item)
       .then((data) => {
         handelInfoToolOk();
+        setTimeout(() => {
+          history.push("./signin");
+          closeAllPopups();
+        }, 2000);
       })
       .catch((err) => {
         console.log(err);
@@ -124,17 +105,17 @@ function App() {
 
 
   function handleLogin(item) {
-    console.log("логинися", item)
     api
       .login(item)
       .then((data) => {
-        localStorage.setItem("jwl", data.token);
+        localStorage.setItem("jwt", data.token);
         setUserEmail(item.email)
-        handelInfoToolOk();
+        // handelInfoToolOk();
         setLoggedIn(true);
-        // setTimeout(() => {
-        //   history.push("/main");
-        // }, 2000);
+        setTimeout(() => {
+          history.push("./main");
+          // closeAllPopups();
+        }, 2000);
       })
       .catch((err) => {
         console.log(err);
@@ -142,39 +123,27 @@ function App() {
       })
   }
 
-  // console.log(loggedIn);
-
   function handleSignOut() {
-    localStorage.removeItem("jwl");
+    localStorage.removeItem("jwt");
     setLoggedIn(false);
     setUserEmail('');
-    // history.push("/signin")
+    history.push("./signin")
   }
 
   useEffect(() => {
     if (localStorage.jwt) {
-      console.log(localStorage.jwt)
       api
         .checkValidToken(localStorage.jwt)
         .then((item) => {
-          console.log(item)
           setLoggedIn(true);
           setUserEmail(item.data.email);
-          // history.push("./main")
+          history.push("./main")
         })
         .catch((err) => {
           console.log(err)
         })
     }
   }, [])
-
-
-
-
-
-
-
-
 
 
   function handleUpdateUser(item) {
@@ -200,8 +169,6 @@ function App() {
       })
       .catch(err => console.log(err));
   }
-
-
 
 
   const [cards, setCards] = useState([]);
@@ -258,8 +225,6 @@ function App() {
 
 
   return (
-    <BrowserRouter>
-
       <CurrentUserContext.Provider value={currentUser}>
         <div className="page">
           <Switch>
@@ -288,6 +253,7 @@ function App() {
               onClick={handleSignOut}
               text={'Выйти'}
             />
+
             <Route path="/signin">
               <Header url="/signup" text="Зарегистрироваться"/>
               <Login onLogin={handleLogin} />
@@ -303,7 +269,7 @@ function App() {
             </Route>
 
             <Route exact path="/">
-              {loggedIn ? <Redirect to="/" /> : <Redirect to="/signin"/>}
+              {loggedIn ? <Redirect to="/main" /> : <Redirect to="/signin"/>}
             </Route>
 
           </Switch>
@@ -312,7 +278,6 @@ function App() {
 
         </div>
       </CurrentUserContext.Provider>
-    </BrowserRouter>
   )
 }
 
