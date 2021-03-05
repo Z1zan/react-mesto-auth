@@ -1,32 +1,24 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom'
+import { BrowserRouter, Switch, Route, Redirect, useHistory } from 'react-router-dom';
 
-import Header from './Header.js';
-import Main from './Main.js';
-import Footer from './Footer.js';
-import PopupWithForm from './PopupWithForm.js';
-import ImagePopup from './ImagePopup.js';
-import api from '../utils/api.js';
-import EditProfilePopup from './EditProfilePopup.js';
-import EditAvatarPopup from './EditAvatarPopup.js';
-import AddPlacePopup from './AddPlacePopup.js';
+import Header from './Header';
+import Main from './Main';
+import Footer from './Footer';
+import api from '../utils/api';
 
+import Login from './Login';
+import Register from './Register';
+import InfoToolOk from './InfoToolOk';
+import InfoToolNope from './InfoToolNope';
+import ProtectedRoute from './ProtectedRoute';
 
-import Login from './Login.js';
-import Register from './Register.js';
-// import InfoTooltip from './InfoTooltip.js';
-import InfoToolOk from './InfoToolOk.js';
-import InfoToolNope from './InfoToolNope.js';
-import ProtectedRoute from './ProtectedRoute.js';
-
-
-import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
+import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
 function App() {
 
-  // const history = useHistory();
-
+  const history = useHistory();
+  console.log("из App", history);
 
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
@@ -38,7 +30,7 @@ function App() {
   const [isInfoToolOkPopupOpen, setIsInfoToolOkPopupOpen] = useState(false);
   const [isInfoToolNopePopupOpen, setIsInfoToolNopePopupOpen] = useState(false);
 
-  const [loggedIn, setLoggedIn] = useState(true);
+  const [loggedIn, setLoggedIn] = useState(false);
   const [userEmail, setUserEmail] = useState('');
 
 
@@ -92,22 +84,37 @@ function App() {
       .then((data) => {
         setCurrentUser(data);
       })
-      .catch((err) => console.log(err))
+      .catch((err) => console.log(err));
   }, [])
 
 
+  // const history = useHistory();
+  // console.log(history);
+
+  // function handleRegister(item) {
+  //   // console.log(item);
+  //   api
+  //     .registration(item)
+  //     .then((data) => {
+  //       // console.log(data);
+  //       handelInfoToolOk();
+  //       // setTimeout(() => {
+  //       //   history.push("/signin");
+  //       // }, 1000);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //       handleInfoToolNope();
+  //     })
+  // }
 
 
   function handleRegister(item) {
-    console.log(item);
+    // console.log(item);
     api
       .registration(item)
       .then((data) => {
-        console.log(data);
         handelInfoToolOk();
-        // setTimeout(() => {
-        //   history.push("/signin")
-        // }, 3000)
       })
       .catch((err) => {
         console.log(err);
@@ -117,17 +124,17 @@ function App() {
 
 
   function handleLogin(item) {
-    console.log(item)
+    console.log("логинися", item)
     api
       .login(item)
       .then((data) => {
-        console.log("LOGIN", data);
+        localStorage.setItem("jwl", data.token);
+        setUserEmail(item.email)
+        handelInfoToolOk();
         setLoggedIn(true);
-        localStorage.setItem("jwt", data.token);
-        // handelInfoToolOk()
         // setTimeout(() => {
-        //   history.push("/main")
-        // }, 3000)
+        //   history.push("/main");
+        // }, 2000);
       })
       .catch((err) => {
         console.log(err);
@@ -135,26 +142,32 @@ function App() {
       })
   }
 
+  // console.log(loggedIn);
+
   function handleSignOut() {
-    localStorage.removeItem("jwt");
+    localStorage.removeItem("jwl");
     setLoggedIn(false);
+    setUserEmail('');
+    // history.push("/signin")
   }
 
   useEffect(() => {
-    console.log("loggedIN", loggedIn)
     if (localStorage.jwt) {
+      console.log(localStorage.jwt)
       api
         .checkValidToken(localStorage.jwt)
         .then((item) => {
           console.log(item)
           setLoggedIn(true);
           setUserEmail(item.data.email);
+          // history.push("./main")
         })
         .catch((err) => {
           console.log(err)
         })
     }
   }, [])
+
 
 
 
@@ -251,9 +264,9 @@ function App() {
         <div className="page">
           <Switch>
 
-            <ProtectedRoute 
-              path="/main" 
-              loggedIn={loggedIn} 
+            <ProtectedRoute
+              path="/main"
+              loggedIn={loggedIn}
               component={Main}
               onEditAvatar={handleEditAvatarClick}
               onEditProfile={handleEditProfileClick}
@@ -271,6 +284,9 @@ function App() {
               addPopupOpen={addPopupOpen}
               selectedCard={selectedCard}
               imgPopupOpen={imgPopupOpen}
+              userEmail={userEmail}
+              onClick={handleSignOut}
+              text={'Выйти'}
             />
             <Route path="/signin">
               <Header url="/signup" text="Зарегистрироваться"/>
@@ -287,7 +303,7 @@ function App() {
             </Route>
 
             <Route exact path="/">
-              {loggedIn ? <Redirect to="/main" /> : <Redirect  to="/signin"/>}
+              {loggedIn ? <Redirect to="/" /> : <Redirect to="/signin"/>}
             </Route>
 
           </Switch>

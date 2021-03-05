@@ -1,8 +1,9 @@
 class Api {
-  constructor({baseUrl, token, authUrl}) {
+  constructor({ baseUrl, token, authUrl, jwl }) {
     this.baseUrl = baseUrl;
     this._token = token;
     this.authUrl = authUrl;
+    this.jwl = jwl;
 
   }
 
@@ -168,12 +169,12 @@ class Api {
       )
   }
 
-  checkValidToken({_id, email}) {
+  checkValidToken(token) {
     return fetch(`${this.authUrl}/users/me`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "Authorization" : `Bearer ${this.jwl}`
+        "Authorization" : `Bearer ${token}`
       }
     })
     .then((res) => {
@@ -189,6 +190,7 @@ const api = new Api({
   baseUrl: "https://mesto.nomoreparties.co/v1/cohort-19",
   token: "264a260c-a5ff-4494-a8c2-9dd802b24892",
   authUrl: "https://auth.nomoreparties.co",
+  jwl: localStorage.getItem("jwl"),
 });
 
 export default api;

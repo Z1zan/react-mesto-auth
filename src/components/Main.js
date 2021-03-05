@@ -16,7 +16,7 @@ function Main(props) {
 
   return(
     <>
-      <Header url="/" text="Выйти" onSignOut={props.handleSignOut}/>
+      <Header url="/" text="Выйти" onSignOut={props.handleSignOut} userEmail={props.userEmail} onClick={props.onClick} text={props.text} />
       <main className="main">
         <div className="profile">
           <div className="profile__container">
