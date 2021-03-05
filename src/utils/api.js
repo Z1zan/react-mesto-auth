@@ -1,7 +1,9 @@
 class Api {
-  constructor({baseUrl, token}) {
+  constructor({baseUrl, token, authUrl}) {
     this.baseUrl = baseUrl;
     this._token = token;
+    this.authUrl = authUrl;
+
   }
 
   getInitialCards() {
@@ -130,52 +132,43 @@ class Api {
   }
 
 
-  registration(data) {
+  registration({email, password}) {
     return fetch(`${this.authUrl}/signup`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        password: data.password,
-        email: data.email
+        password,
+        email
       })
     })
     .then((res) => 
     res.ok
-      ? res.json(
-        // {data: {
-        //     _id,
-        //     email
-        // }}
-      )
-      : Promise.reject(`${res.status} некорректно заполнено одно из полей`) //сделать как в брифе
+      ? res.json()
+      : Promise.reject(`Error: ${res.status}`) //сделать как в брифе;
     )
   }
 
-  login(data) {
+  login({email, password}) {
     return fetch(`${this.authUrl}/signin`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        password: data.password,
-        email: data.email
+        password,
+        email
       })
     })
     .then((res) =>
-    res.ok
-      ? res.json(
-        // {
-        //   token
-        // }
+      res.ok
+        ? res.json()
+        : Promise.reject(`Ошибка дизлайка карточки: ${res.status}`)
       )
-      : Promise.reject(`${res.status} некорректно заполнено одно из полей`)  //сделать как в брифе
-    )
   }
 
-  checkValidToken(_id, email) {
+  checkValidToken({_id, email}) {
     return fetch(`${this.authUrl}/users/me`, {
       method: "GET",
       headers: {
@@ -183,24 +176,19 @@ class Api {
         "Authorization" : `Bearer ${this.jwl}`
       }
     })
-    .then((res) => 
-      res.ok
-        ? res.json(
-        // {
-        // _id,
-        // email
-        // }
-        )
-        : Promise.reject(`${res.status} некорректно заполнено одно из полей`)  //сделать как в брифе
-    )
+    .then((res) => {
+      if(res.ok) {
+        res.json()
+      }
+      return Promise.reject(`Error: ${res.status}`); ///////////////////
+    })
   }
 }
 
 const api = new Api({
   baseUrl: "https://mesto.nomoreparties.co/v1/cohort-19",
-  authUrl: "https://auth.nomoreparties.co",
-  jwl: "PUSTO",
   token: "264a260c-a5ff-4494-a8c2-9dd802b24892",
+  authUrl: "https://auth.nomoreparties.co",
 });
 
 export default api;

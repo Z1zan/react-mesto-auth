@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState, useEffect  } from 'react';
+import { useState, useEffect } from 'react';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom'
 
 import Header from './Header.js';
@@ -25,6 +25,8 @@ import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
 
 function App() {
 
+  // const history = useHistory();
+
 
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
@@ -35,6 +37,9 @@ function App() {
 
   const [isInfoToolOkPopupOpen, setIsInfoToolOkPopupOpen] = useState(false);
   const [isInfoToolNopePopupOpen, setIsInfoToolNopePopupOpen] = useState(false);
+
+  const [loggedIn, setLoggedIn] = useState(true);
+  const [userEmail, setUserEmail] = useState('');
 
 
   function handleCardClick(card) {
@@ -94,25 +99,62 @@ function App() {
 
 
   function handleRegister(item) {
-    console.log(item)
-    console.log("HELLLLOOOOOOO")
+    console.log(item);
     api
       .registration(item)
       .then((data) => {
-        console.log(data)
-        handelInfoToolOk()
+        console.log(data);
+        handelInfoToolOk();
+        // setTimeout(() => {
+        //   history.push("/signin")
+        // }, 3000)
       })
       .catch((err) => {
-        console.log(err)
-        handleInfoToolNope()
+        console.log(err);
+        handleInfoToolNope();
       })
   }
+
+
   function handleLogin(item) {
-
+    console.log(item)
+    api
+      .login(item)
+      .then((data) => {
+        console.log("LOGIN", data);
+        setLoggedIn(true);
+        localStorage.setItem("jwt", data.token);
+        // handelInfoToolOk()
+        // setTimeout(() => {
+        //   history.push("/main")
+        // }, 3000)
+      })
+      .catch((err) => {
+        console.log(err);
+        handleInfoToolNope();
+      })
   }
-  function handleSignOut(item) {
 
+  function handleSignOut() {
+    localStorage.removeItem("jwt");
+    setLoggedIn(false);
   }
+
+  useEffect(() => {
+    console.log("loggedIN", loggedIn)
+    if (localStorage.jwt) {
+      api
+        .checkValidToken(localStorage.jwt)
+        .then((item) => {
+          console.log(item)
+          setLoggedIn(true);
+          setUserEmail(item.data.email);
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    }
+  }, [])
 
 
 
@@ -200,8 +242,6 @@ function App() {
       .catch(err => console.log(err));
   }
 
-  const [loggedIn, setLoggedIn] = useState(false);
-
 
 
   return (
@@ -211,26 +251,27 @@ function App() {
         <div className="page">
           <Switch>
 
-            <ProtectedRoute path="/main" loggedIn={loggedIn}>
-              <Header url="/" text="Выйти" onSignOut={handleSignOut}/>
-              <Main
-                onEditAvatar={handleEditAvatarClick}
-                onEditProfile={handleEditProfileClick}
-                onAddPlace={handleAddPlaceClick}
-                onImgCard={handleCardClick}
-                cards={cards}
-                handleCardLike={handleCardLike}
-                handleCardDelete={handleCardDelete}
-              />
-              <EditAvatarPopup setAvatar={handleUpdateAvatar} isOpen={avatarPopupOpen} onClose={closeAllPopups} />
-              <EditProfilePopup onUpdateUser={handleUpdateUser} isOpen={editPopupOpen} onClose={closeAllPopups} />
-              <AddPlacePopup addCard={handleAddPlaceSubmit} isOpen={addPopupOpen} onClose={closeAllPopups} />
-              <PopupWithForm name="del" title="Вы уверены?" >
-                <input id="" name="cardId" required type="text" hidden />
-              </PopupWithForm>
-              <ImagePopup card={selectedCard} isOpen={imgPopupOpen} onClose={closeAllPopups} />
-            </ProtectedRoute>
-
+            <ProtectedRoute 
+              path="/main" 
+              loggedIn={loggedIn} 
+              component={Main}
+              onEditAvatar={handleEditAvatarClick}
+              onEditProfile={handleEditProfileClick}
+              onAddPlace={handleAddPlaceClick}
+              onImgCard={handleCardClick}
+              cards={cards}
+              handleCardLike={handleCardLike}
+              handleCardDelete={handleCardDelete}
+              handleUpdateAvatar={handleUpdateAvatar}
+              avatarPopupOpen={avatarPopupOpen}
+              closeAllPopups={closeAllPopups}
+              handleUpdateUser={handleUpdateUser}
+              editPopupOpen={editPopupOpen}
+              handleAddPlaceSubmit={handleAddPlaceSubmit}
+              addPopupOpen={addPopupOpen}
+              selectedCard={selectedCard}
+              imgPopupOpen={imgPopupOpen}
+            />
             <Route path="/signin">
               <Header url="/signup" text="Зарегистрироваться"/>
               <Login onLogin={handleLogin} />
