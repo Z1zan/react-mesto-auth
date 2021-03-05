@@ -1,8 +1,5 @@
+@import url('./__img/popup-info__img.css');
 
-
-.popup-info {
-
-}
 
 .popup-info .popup__container {
   display: flex;
@@ -11,11 +8,7 @@
   align-items: center;
 }
 
-.popup-info__img {
-  max-width: 120px;
-  max-width: 120px;
-  margin-top: 60px;
-}
+
 
 .popup-info .popup__title {
   margin: 32px 36px 60px;

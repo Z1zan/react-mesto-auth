@@ -140,7 +140,7 @@ function App() {
           history.push("./main")
         })
         .catch((err) => {
-          console.log(err)
+          console.log(err);
         })
     }
   }, [])
