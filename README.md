@@ -15,7 +15,3 @@ Mesto-React-Auth
 ### Для запуска нужен:
 * HTML - Бразуер Chrome (Яндекс Браузер или аналогичный Chromium) или Safari.
 * CSS & JS - Текстовая программа умеющая читать код из файла с расширением .css & .js (VSCode)
-
-
-### Сам проект:
-* [Ссылка на Github Pages](https://z1zan.github.io/react-mesto-auth/)
