@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/react-mesto-auth/static/css/main.d3d41960.chunk.css",
-    "main.js": "/react-mesto-auth/static/js/main.85739d36.chunk.js",
-    "main.js.map": "/react-mesto-auth/static/js/main.85739d36.chunk.js.map",
+    "main.js": "/react-mesto-auth/static/js/main.2224beb8.chunk.js",
+    "main.js.map": "/react-mesto-auth/static/js/main.2224beb8.chunk.js.map",
     "runtime-main.js": "/react-mesto-auth/static/js/runtime-main.a83ba6e7.js",
     "runtime-main.js.map": "/react-mesto-auth/static/js/runtime-main.a83ba6e7.js.map",
     "static/js/2.2d3416c2.chunk.js": "/react-mesto-auth/static/js/2.2d3416c2.chunk.js",
@@ -19,6 +19,6 @@
     "static/js/runtime-main.a83ba6e7.js",
     "static/js/2.2d3416c2.chunk.js",
     "static/css/main.d3d41960.chunk.css",
-    "static/js/main.85739d36.chunk.js"
+    "static/js/main.2224beb8.chunk.js"
   ]
 }
